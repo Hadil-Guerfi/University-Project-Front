@@ -6,8 +6,6 @@ const PrivateRoutes = () => {
 
   const {loggedIn}=useAuth();
 
-  console.log(loggedIn)
-
   return loggedIn? <Outlet /> : <Navigate to="/login" />;
 };
 

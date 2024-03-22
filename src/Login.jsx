@@ -1,19 +1,19 @@
-// import { Navigate } from "react-router-dom";
 import { Button, ConfigProvider, Form, Input } from "antd";
 import logoIssatSo from "./issatso.png";
 import { UseLogin } from "./API";
 import { useState } from "react";
 import { useAuth } from "./authProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
 
 
-  const {loggedIn}=useAuth();
+  const { loggedIn, setLoggedIn } = useAuth();
 
-  console.log(loggedIn)
+  const navigate=useNavigate()
 
-  const onSucessLogin = () => {
+  const onSucessLogin = (data) => {
+    
     // console.log(data);
 
     Object.keys(user).forEach((key) => {
@@ -22,6 +22,10 @@ function Login() {
         [key]: { ...prevUser[key], error: "" }, // Reset error only
       }));
     });
+
+    setLoggedIn(data.data.data.user._id);
+
+    navigate("/");
   };
 
   const onErrorLogin = (error) => {
@@ -64,6 +68,7 @@ function Login() {
   };
 
   // console.log(user, "user");
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
     <>
@@ -127,7 +132,7 @@ function Login() {
                 validateStatus={user.password.error ? "error" : ""}
                 help={user.password.error ? user.password.error : ""}>
                 {" "}
-                <Input
+                <Input.Password
                   placeholder="Entrer mot de passe"
                   onChange={(e) => {
                     setUser((prevUser) => ({
@@ -139,6 +144,10 @@ function Login() {
                     }));
                   }}
                   value={user.password.value}
+                  visibilityToggle={{
+                    visible: passwordVisible,
+                    onVisibleChange: setPasswordVisible,
+                  }}
                 />
               </Form.Item>
               <Form.Item>

@@ -8,6 +8,7 @@ function AuthProvider(props) {
   const [loggedIn, setLoggedIn] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
+
   async function getLoggedIn() {
     try {
       const loggedInRes = await instance.get("/auth/verifyLogIn", {
@@ -23,18 +24,14 @@ function AuthProvider(props) {
 
   useEffect(() => {
     getLoggedIn();
-  console.log("hello logged in effect");
-
   }, []);
 
-
   return (
-    <AuthContext.Provider value={{ loggedIn, getLoggedIn }}>
-      {!loading&&props.children}
+    <AuthContext.Provider value={{ loggedIn, getLoggedIn, setLoggedIn }}>
+      {!loading && props.children}
     </AuthContext.Provider>
   );
 }
-
 
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
@@ -45,7 +42,6 @@ export default AuthProvider;
 export const useAuth = () => {
   return useContext(AuthContext);
 };
-
 
 /*The `getLoggedIn` function inside `AuthProvider` is called whenever the `AuthProvider` component is mounted due to the `useEffect` hook. 
 
