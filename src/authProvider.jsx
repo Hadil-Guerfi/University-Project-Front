@@ -4,7 +4,8 @@ import instance from "./axiosInstance";
 
 const AuthContext = createContext();
 
-function AuthProvider(props) {
+function AuthProvider({children}) {
+    
   const [loggedIn, setLoggedIn] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +29,7 @@ function AuthProvider(props) {
 
   return (
     <AuthContext.Provider value={{ loggedIn, getLoggedIn, setLoggedIn }}>
-      {!loading && props.children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

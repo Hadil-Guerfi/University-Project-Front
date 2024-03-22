@@ -11,20 +11,22 @@ function Login() {
   const { loggedIn, setLoggedIn } = useAuth();
 
   const navigate=useNavigate()
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [user, setUser] = useState({
+    email: { value: "homi@gmail.com", error: "" },
+    password: { value: "123456789", error: "" },
+  });
+
 
   const onSucessLogin = (data) => {
-    
-    // console.log(data);
-
     Object.keys(user).forEach((key) => {
       setUser((prevUser) => ({
         ...prevUser,
-        [key]: { ...prevUser[key], error: "" }, // Reset error only
+        [key]: { ...prevUser[key], error: "" }, 
       }));
     });
-
+    
     setLoggedIn(data.data.data.user._id);
-
     navigate("/");
   };
 
@@ -54,10 +56,6 @@ function Login() {
     });
   };
 
-  const [user, setUser] = useState({
-    email: { value: "homi@gmail.com", error: "" },
-    password: { value: "123456789", error: "" },
-  });
 
   const { mutate: login } = UseLogin(onSucessLogin, onErrorLogin);
 
@@ -68,7 +66,6 @@ function Login() {
   };
 
   // console.log(user, "user");
-  const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
     <>
