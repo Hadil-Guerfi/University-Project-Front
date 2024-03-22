@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import Home from "./Home";
 import Login from "./Login";
-import AuthProvider from "./authProvider";
 import Locals from "./Locals";
+import AuthProvider from "./authProvider";
 
 function App() {
   return (

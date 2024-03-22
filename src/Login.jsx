@@ -3,6 +3,7 @@ import { Button, ConfigProvider, Form, Input } from "antd";
 import logoIssatSo from "./issatso.png";
 import { UseLogin } from "./API";
 import { useState } from "react";
+
 function Login() {
   // let auth = { token: true };
   const onSucessLogin = (data) => {
@@ -15,8 +16,6 @@ function Login() {
     });
 
     //set user id in local storage
-
-
   };
 
   const onErrorLogin = (error) => {
@@ -56,7 +55,6 @@ function Login() {
     console.log({ email: user.email.value, password: user.password.value });
 
     login({ email: user.email.value, password: user.password.value });
-
   };
 
   // console.log(user, "user");
@@ -162,4 +160,3 @@ function Login() {
 }
 
 export default Login;
-

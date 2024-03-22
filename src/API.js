@@ -1,5 +1,5 @@
 // import axios from "axios"
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 // import instance from "./axiosInstance";
 import { request } from "./request";
 
@@ -16,3 +16,18 @@ export const UseLogin=(onSucessLogin ,onErrorLogin)=>{
       onError: onErrorLogin,
     });
 }
+
+const verifyLogin = () => {
+  // console.log(params)
+  return request({
+    url: "/auth/verifyLogIn",
+    method: "GET",
+  });
+};
+
+export const UseVerifyLogin = (onSucessLoggedIn, onErrorLoggedIn) => {
+  return useQuery("logged-in",verifyLogin, {
+    onSuccess: onSucessLoggedIn,
+    onError: onErrorLoggedIn,
+  });
+};
