@@ -1,31 +1,27 @@
 import { Button, ConfigProvider, Form, Input } from "antd";
-import logoIssatSo from "./issatso.png";
-import { UseLogin } from "./API";
+import logoIssatSo from "../assests/issatso.png";
+import { UseLogin } from "./LoginAPI";
 import { useState } from "react";
-import { useAuth } from "./authProvider";
+import { useAuth } from "../context/auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
-
-
   const { loggedIn, setLoggedIn } = useAuth();
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [user, setUser] = useState({
-    email: { value: "homi@gmail.com", error: "" },
-    password: { value: "123456789", error: "" },
+    email: { value: "", error: "" },
+    password: { value: "", error: "" },
   });
-
 
   const onSucessLogin = (data) => {
     Object.keys(user).forEach((key) => {
       setUser((prevUser) => ({
         ...prevUser,
-        [key]: { ...prevUser[key], error: "" }, 
+        [key]: { ...prevUser[key], error: "" },
       }));
     });
-    
     setLoggedIn(data.data.data.user._id);
     navigate("/");
   };
@@ -55,7 +51,6 @@ function Login() {
       }
     });
   };
-
 
   const { mutate: login } = UseLogin(onSucessLogin, onErrorLogin);
 
