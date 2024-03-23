@@ -1,8 +1,8 @@
 import { Button, ConfigProvider, Form, Input } from "antd";
-import logoIssatSo from "../assests/issatso.png";
+import logoIssatSo from "../../assests/issatso.png";
 import { UseLogin } from "./LoginAPI";
 import { useState } from "react";
-import { useAuth } from "../context/auth/authProvider";
+import { useAuth } from "../../context/auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
