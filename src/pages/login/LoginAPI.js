@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import { request } from "../Utils/requestConfig/request";
+import { request } from "../../Utils/requestConfig/request";
 
 const login = (user) => {
   return request({ url: "/auth/login", method: "POST", data: user });
