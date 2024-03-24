@@ -1,25 +1,22 @@
-import { MenuFoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import  { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { useLocation, useNavigate } from "react-router";
+import { useToggleButton } from "../configProv/ToggleSideMenuProvider";
 import Logo from "./Logo";
 import { items } from "./MenuItem";
-import { useMediaQuery } from "react-responsive";
 
 const SideMenu = () => {
   const { Sider } = Layout;
   const navigate = useNavigate();
   const location = useLocation();
-  const [collapse, setCollapse] = useState(false);
   const isMediumScreen = useMediaQuery({ maxWidth: 1024 });
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
+  const { collapse } = useToggleButton();
+
   const handelClick = (item) => {
     navigate(item.key);
   };
-  const handelCollapse = () => {
-    setCollapse((prev) => !prev);
-    console.log("isSmall scree ");
-  };
+
   return (
     <Sider
       width={"245"}
@@ -31,12 +28,6 @@ const SideMenu = () => {
       collapsible
       collapsed={isMediumScreen || isSmallScreen ? true : collapse}
       collapsedWidth={isSmallScreen ? 0 : 110}>
-      <MenuFoldOutlined
-        className={`absolute right-[-25px] top-[5px] text-2xl text-[#4D44B5] cursor-pointer ${
-          isMediumScreen && !isSmallScreen ? "hidden" : ""
-        }`}
-        onClick={handelCollapse}
-      />
       <Logo />
       <Menu
         onClick={handelClick}

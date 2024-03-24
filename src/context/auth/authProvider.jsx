@@ -5,8 +5,8 @@ import instance from "../../Utils/requestConfig/axiosInstance";
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-  const [loggedIn, setLoggedIn] = useState(undefined);
-  const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function getLoggedIn() {
     try {
@@ -42,5 +42,3 @@ export default AuthProvider;
 export const useAuth = () => {
   return useContext(AuthContext);
 };
-
-
