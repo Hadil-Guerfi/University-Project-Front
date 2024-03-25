@@ -14,6 +14,7 @@ function Login() {
     email: { value: "", error: "" },
     password: { value: "", error: "" },
   });
+  const [userError, setUserError] = useState("");
 
   const onSucessLogin = (data) => {
     Object.keys(user).forEach((key) => {
@@ -22,6 +23,7 @@ function Login() {
         [key]: { ...prevUser[key], error: "" },
       }));
     });
+    setUserError("");
     setLoggedIn(data.data.data.user._id);
     navigate("/");
   };
@@ -29,27 +31,38 @@ function Login() {
   const onErrorLogin = (error) => {
     const errors = error.response.data.message;
 
-    Object.keys(user).forEach((key) => {
-      let keyErrors = [];
+    if (Array.isArray(errors)) {
+      setUserError("");
+      Object.keys(user).forEach((key) => {
+        let keyErrors = [];
 
-      errors.forEach((error) => {
-        if (error.path === key) {
-          keyErrors.push(error);
+        errors.forEach((error) => {
+          if (error.path === key) {
+            keyErrors.push(error);
+          }
+        });
+
+        if (keyErrors.length > 0) {
+          setUser((prevUser) => ({
+            ...prevUser,
+            [key]: { ...prevUser[key], error: keyErrors[0].msg },
+          }));
+        } else {
+          setUser((prevUser) => ({
+            ...prevUser,
+            [key]: { ...prevUser[key], error: "" }, // Reset error only
+          }));
         }
       });
-
-      if (keyErrors.length > 0) {
+    } else if (error.response.data.status === "fail") {
+      Object.keys(user).forEach((key) => {
         setUser((prevUser) => ({
           ...prevUser,
-          [key]: { ...prevUser[key], error: keyErrors[0].msg },
+          [key]: { ...prevUser[key], error: "" },
         }));
-      } else {
-        setUser((prevUser) => ({
-          ...prevUser,
-          [key]: { ...prevUser[key], error: "" }, // Reset error only
-        }));
-      }
-    });
+      });
+      setUserError(errors);
+    }
   };
 
   const { mutate: login } = UseLogin(onSucessLogin, onErrorLogin);
@@ -142,6 +155,14 @@ function Login() {
                   }}
                 />
               </Form.Item>
+              {userError && (
+                <Form.Item style={{marginBottom:"0"}}>
+                  <label className="flex items-center justify-center text-red-500 -mt-[10px]">
+                    {userError}
+                  </label>
+                </Form.Item>
+              )}
+
               <Form.Item>
                 <div className="w-full flex items-center justify-center">
                   <ConfigProvider
@@ -156,7 +177,7 @@ function Login() {
                         handleClickLogin();
                       }}
                       size="large"
-                      className=" mt-5 w-[80%] border rounded-lg bg-[#6090bc] text-white text-base ">
+                      className=" mt-8 w-[80%] border rounded-lg bg-[#6090bc] text-white text-base  ">
                       Submit
                     </Button>
                   </ConfigProvider>

@@ -10,10 +10,11 @@ function AuthProvider({ children }) {
 
   async function getLoggedIn() {
     try {
-      const loggedInRes = await instance.get("/auth/verifyLogIn", {
+      const loggedInRes = await instance.get("/users/verifyLogIn", {
         withCredentials: true,
       });
-      setLoggedIn(loggedInRes.data.data.currentUser.user._id);
+      // console.log(loggedInRes);
+      setLoggedIn(loggedInRes.data.data?.currentUser?.user._id);
     } catch (error) {
       console.error("Error fetching logged in status:", error);
     } finally {
