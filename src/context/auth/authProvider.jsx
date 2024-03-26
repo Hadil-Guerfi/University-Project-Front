@@ -5,12 +5,10 @@ import instance from "../../Utils/requestConfig/axiosInstance";
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(undefined);
+  const [loading, setLoading] = useState(true);
 
   async function getLoggedIn() {
-    setLoading(true); 
-
     try {
       const loggedInRes = await instance.get("/users/verifyLogIn", {
         withCredentials: true,
