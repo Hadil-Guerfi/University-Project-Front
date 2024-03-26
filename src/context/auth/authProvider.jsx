@@ -9,6 +9,8 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
 
   async function getLoggedIn() {
+    setLoading(true); 
+
     try {
       const loggedInRes = await instance.get("/users/verifyLogIn", {
         withCredentials: true,
