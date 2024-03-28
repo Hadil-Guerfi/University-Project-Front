@@ -5,7 +5,7 @@ export const getTitle = (path) => {
     case "/emploi":
       return "Emploi de temps ";
     case "/avis":
-      return "Avis";
+      return "Envoyer votre Avis";
     case "/note":
       return "Note";
     case "/groupe":
