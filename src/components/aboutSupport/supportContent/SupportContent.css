@@ -1,0 +1,25 @@
+.ant-pagination-total-text {
+  flex-grow: 1;
+}
+
+.ant-pagination .ant-pagination-item {
+  border: 2px solid #a098ae;
+}
+
+.ant-pagination .ant-pagination-item a {
+  color: #a098ae;
+}
+
+.ant-pagination .ant-pagination-item-active a {
+  color: white;
+}
+
+.ant-pagination .ant-pagination-item-active {
+  border: none;
+}
+
+.ant-pagination-prev,
+.ant-pagination-next {
+  position: relative;
+  top: 3px;
+}

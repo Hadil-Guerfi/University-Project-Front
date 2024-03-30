@@ -2,6 +2,8 @@ export const getTitle = (path) => {
   switch (path) {
     case "/":
       return "Actualité";
+    case "/SupportDeCours":
+      return "Support de cours";
     case "/emploi":
       return "Emploi de temps ";
     case "/avis":
@@ -14,6 +16,7 @@ export const getTitle = (path) => {
       return "Bibliothèque";
     case "/forms":
       return "Forms";
-    case"/evenments":return"Evenments"
+    case "/evenments":
+      return "Evenments";
   }
 };

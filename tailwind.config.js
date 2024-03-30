@@ -14,6 +14,8 @@ export default {
       colors: {
         loginBg: "#F8FAFC",
         main_color: "#4D44B5",
+        gray_support_cours: "#A098AE",
+        blue_list_matiere: "#363B64",
       },
     },
   },

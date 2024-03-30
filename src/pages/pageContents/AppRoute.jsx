@@ -9,6 +9,7 @@ import Forms from "../forms/Forms";
 import Note from "../note/Note";
 import ListeGroup from "../listeGroup/ListeGroup";
 import PrivateRoutes from "../../components/privateRoutes/PrivateRoutes";
+import SupportDeCours from "../supportDeCours/SupportDeCours";
 
 const AppRoute = () => {
   return (
@@ -22,6 +23,7 @@ const AppRoute = () => {
         <Route path="/bibliotheque" element={<Bibliotheque />}></Route>
         <Route path="/forms" element={<Forms />}></Route>
         <Route path="/avis" element={<Avis />}></Route>
+        <Route path="/SupportDeCours" element={<SupportDeCours />}></Route>
       </Route>
     </Routes>
   );

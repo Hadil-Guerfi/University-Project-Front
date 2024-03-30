@@ -17,6 +17,11 @@ const getItem = (label, key, icon) => {
 export const items = [
   getItem("Actualité", "/", <MailOutlined className="ml-6" />),
   getItem("Emploi de temps", "/emploi", <AppstoreOutlined className="ml-6" />),
+  getItem(
+    "Supports de cours ",
+    "/SupportDeCours",
+    <SettingOutlined className="ml-6" />
+  ),
   getItem("Evenments", "/evenments", <SettingOutlined className="ml-6" />),
   getItem(
     "Liste de votre groupe",
