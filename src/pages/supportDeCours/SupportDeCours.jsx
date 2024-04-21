@@ -1,9 +1,7 @@
 import { Flex } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchModules
-} from "../../ReduxToolkit/supportCoursSlice";
+import { fetchModules } from "../../ReduxToolkit/supportCoursSlice";
 import ListMatiere from "../../components/aboutSupport/listMatiere/ListMatiere";
 import SupportContent from "../../components/aboutSupport/supportContent/SupportContent";
 import { useAuth } from "../../context/auth/authProvider";
@@ -18,9 +16,10 @@ function SupportDeCours() {
 
   const dispatch = useDispatch();
 
+  //-------------------------------- ADD condition if current date de a => b donc sem 1 else sem2
+
   useEffect(() => {
     dispatch(fetchModules({ userId: loggedIn, semestre: "semestre1" }));
- 
   }, [loggedIn]);
 
   return (

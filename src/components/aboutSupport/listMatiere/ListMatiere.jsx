@@ -6,9 +6,20 @@ import UneMatiere from "../uneMatiere/UneMatiere";
 function ListMatiere() {
   const [viewMore, setViewMore] = useState(false);
 
-
   const supportCoursState = useSelector((state) => state.supportCoursState);
+  const themes = [
+    "#4D44B5",
+    "#FB7D5B",
+    "#FCC43E",
+    "#7ba875",
+    "#a275a8",
+    "#a87575",
 
+    "#303972",
+    "#75a99c",
+    "#b24361",
+    "#419dad",
+  ];
 
   return (
     <div className={`w-[28%] h-full self-start`}>
@@ -29,6 +40,7 @@ function ListMatiere() {
               nomMatire={matiere.nomMatiere}
               nomModule={matiere.nomModule}
               types={matiere.types.join("-")}
+              theme={themes[index % themes.length]}
             />
           ))}
       </Flex>
@@ -38,7 +50,7 @@ function ListMatiere() {
         }}
         size="large"
         className="w-full mt-5 rounded-2xl text-[#4D44B5] font-bold bg-[#e2e2f8] border-none">
-        {viewMore?"Voir Mois":"Voir Plus"}
+        {viewMore ? "Voir Mois" : "Voir Plus"}
       </Button>
     </div>
   );

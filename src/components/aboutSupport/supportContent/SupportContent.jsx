@@ -43,6 +43,8 @@ function SupportContent() {
     current * pageSize
   );
 
+  console.log(fichierMatiereSelected?.fichiers);
+
   return (
     <div className="grow p-5 bg-white rounded-lg self-start">
       <Title
@@ -58,6 +60,7 @@ function SupportContent() {
             nomFichier={item.nomFichier}
             nomEnseignant={item.nomEnseignant}
             type={item.type}
+            fichier={item.fichier}
             avatarEnseignant={item.avatarEnseignant}
           />
         ))}
