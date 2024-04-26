@@ -1,29 +1,17 @@
-import { Select, Space, ConfigProvider } from "antd";
+import { Button, ConfigProvider, Select, Space } from "antd";
 import { useEffect, useState } from "react";
-import { Button } from "antd";
 import AForum from "./AForum";
 import { UseGetAllForums } from "./ForumAPI";
-import { CaretLeftOutlined, CaretRightOutlined, SendOutlined } from "@ant-design/icons";
 
 const OtherForumsSideBar = ({ themes }) => {
-  const options = [];
-  for (let i = 10; i < 36; i++) {
-    options.push({
-      label: i.toString(36) + i,
-      value: i.toString(36) + i,
-    });
-  }
   const handleChange = (value) => {
-    // console.log(`selected ${value}`);
     setParams({ themes: value });
-
   };
 
-
-  const [params, setParams] = useState({ themes: [] }); // Corrected "bitcon" to "bitcoin"
+  const [params, setParams] = useState({ themes: [] });
 
   const onSuccessForum = (data) => {
-    console.log(data);
+    // console.log(data);
   };
 
   const onErrorForum = (error) => {
@@ -36,9 +24,7 @@ const OtherForumsSideBar = ({ themes }) => {
     onErrorForum
   );
 
-
   const [viewMoreOthersForums, setViewMoreOthersForums] = useState(false);
-
 
   useEffect(() => {
     refetch();
@@ -92,14 +78,22 @@ const OtherForumsSideBar = ({ themes }) => {
             ? "overflow-y-scroll pr-1.5"
             : "overflow-y-hidden "
         } scrollbarListMatiere   w-full`}>
-        {filteredForums?.data?.data?.forums.map((forum, index) => (
+        {filteredForums?.data?.data?.forumsRes.map((forum, index) => (
           <AForum
             key={forum._id}
-            forumId={forum._id}
+            _id={forum._id}
+            index={index + 1}
+            title={forum.titre}
             forumImg={forum.image_forum}
-            index={index}
-            titre={forum.titre}
             createdAt={forum.createdAt}
+            updatedAt={forum.updatedAt}
+            contenu={forum.contenu}
+            themes={forum.themes}
+            id_creator={forum.id_creator}
+            nbrReponse={forum.nbrReponse}
+            nomCreator={forum.nomCreator}
+            prenomCreator={forum.prenomCreator}
+            avatarCreator={forum.avatarCreator}
           />
         ))}
       </div>

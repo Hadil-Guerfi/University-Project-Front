@@ -6,7 +6,7 @@ import { useAuth } from "../../context/auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
-  const { loggedIn, setLoggedIn } = useAuth();
+  const { loggedIn, setLoggedIn, setUserData } = useAuth();
 
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -25,7 +25,9 @@ function Login() {
     });
     setUserError("");
     setLoggedIn(data.data.data.user._id);
+    setUserData(data.data.data?.user);
     navigate("/");
+
   };
 
   const onErrorLogin = (error) => {

@@ -4,6 +4,7 @@ const UserInfo = () => {
 
   const {userData}=useAuth()
 
+
   return (
     <div className="max-md:hidden">
       <span className="text-[#303972] font-medium">

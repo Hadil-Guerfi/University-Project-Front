@@ -1,9 +1,4 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { FiPlus } from "react-icons/fi";
-import Question from "./Question";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   ConfigProvider,
@@ -15,11 +10,18 @@ import {
   Space,
   Upload,
 } from "antd";
-import OtherForumsSideBar from "./OtherForumsSideBar";
 import TextArea from "antd/es/input/TextArea";
-import { UseAddForum, UseGetAllThemes, UseGetAllUserForums } from "./ForumAPI";
-import { useAuth } from "../../context/auth/authProvider";
+import { useEffect, useRef, useState } from "react";
+import { FiPlus } from "react-icons/fi";
 import { useQueryClient } from "react-query";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../../context/auth/authProvider";
+import { UseAddForum, UseGetAllThemes, UseGetAllUserForums } from "./ForumAPI";
+import OtherForumsSideBar from "./OtherForumsSideBar";
+import Question from "./Question";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedForum } from "../../ReduxToolkit/ForumSlice";
 
 const MyForumsSideBar = () => {
   const [viewMoreMyForums, setViewMoreMyForums] = useState(false);
@@ -30,7 +32,6 @@ const MyForumsSideBar = () => {
   //----------------------------- THEMES ----------------------------------------
   const [items, setItems] = useState([]);
   const [name, setName] = useState("");
-
 
   const { data: themes, isLoading, isError } = UseGetAllThemes();
 
@@ -70,40 +71,40 @@ const MyForumsSideBar = () => {
   };
 
   //----------------------------- IMAGE UPLOAD  ----------------------------------------
-   const [previewOpen, setPreviewOpen] = useState(false);
-   const [previewImage, setPreviewImage] = useState("");
-   const [fileList, setFileList] = useState([]);
-   const getBase64 = (file) =>
-     new Promise((resolve, reject) => {
-       const reader = new FileReader();
-       reader.readAsDataURL(file);
-       reader.onload = () => resolve(reader.result);
-       reader.onerror = (error) => reject(error);
-     });
-   const handlePreview = async (file) => {
-     if (!file.url && !file.preview) {
-       file.preview = await getBase64(file.originFileObj);
-     }
-     setPreviewImage(file.url || file.preview);
-     setPreviewOpen(true);
-   };
-   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-   const uploadButton = (
-     <button
-       style={{
-         border: 0,
-         background: "none",
-       }}
-       type="button">
-       <PlusOutlined />
-       <div
-         style={{
-           marginTop: 8,
-         }}>
-         Upload
-       </div>
-     </button>
-   );
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [fileList, setFileList] = useState([]);
+  const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+  };
+  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const uploadButton = (
+    <button
+      style={{
+        border: 0,
+        background: "none",
+      }}
+      type="button">
+      <PlusOutlined />
+      <div
+        style={{
+          marginTop: 8,
+        }}>
+        Upload
+      </div>
+    </button>
+  );
   //-----------------------------  FORUM  ----------------------------------------
   const [forumsErrors, setForumsErrors] = useState({
     themes: "",
@@ -118,10 +119,9 @@ const MyForumsSideBar = () => {
     setIsModalOpen(false);
 
     toast.success("Forum cré avec  succés");
-    
+
     queryClient.invalidateQueries("forums");
 
-    
     setFileList([]);
 
     setContenu("");
@@ -136,7 +136,6 @@ const MyForumsSideBar = () => {
     });
   };
   const onErrorForum = (error) => {
-
     const atts = Object.keys(forumsErrors);
     const paths = error.response.data.message.map((msg) => msg.path);
 
@@ -182,16 +181,37 @@ const MyForumsSideBar = () => {
       contenu: "",
       image_forum: "",
     });
-    setFileList([])
-    setContenu("")
-    setTitre("")
-    setName("")
+    setFileList([]);
+    setContenu("");
+    setTitre("");
+    setName("");
   };
-
 
   //--------------------------- ALL CURRENT USER FORUMS --------------------------------------
 
-  const {data:currentUserForums}=UseGetAllUserForums();
+  const {
+    data: currentUserForums,
+    isLoading:isLoadingUserForums,
+    isError:isErrorUserForums,
+  } = UseGetAllUserForums();
+
+  const dispatch=useDispatch();
+
+  const forumState=useSelector((state)=>state.ForumState)
+
+ 
+  useEffect(() => {
+    if (!isErrorUserForums && !isLoadingUserForums) {
+      const latestForum = currentUserForums?.data?.data?.forumsRes
+        ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by createdAt in descending order
+        .slice(0, 1)[0];
+      // console.log(latestForum);
+
+      dispatch(setSelectedForum({ selectedForum:latestForum }));
+
+    }
+  }, [isLoadingUserForums, isErrorUserForums, currentUserForums]);
+  
 
   return (
     <div className="h-full relative">
@@ -383,14 +403,26 @@ const MyForumsSideBar = () => {
           viewMoreMyForums ? "overflow-y-scroll pr-1.5" : "overflow-y-hidden "
         } scrollbarListMatiere   w-full`}>
         {currentUserForums &&
-          currentUserForums.data.data.forums.map((forum, index) => (
-            <Question
-              key={index} // Ensure each item has a unique key
-              index={index + 1}
-              title={forum.titre}
-              forumImg={`http://localhost:3001/uploads/${forum.image_forum}`}
-            />
-          ))}
+          currentUserForums?.data?.data?.forumsRes
+            ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((forum, index) => (
+              <Question
+                key={index}
+                index={index + 1}
+                title={forum.titre}
+                forumImg={forum.image_forum}
+                _id={forum._id}
+                createdAt={forum.createdAt}
+                updatedAt={forum.updatedAt}
+                contenu={forum.contenu}
+                themes={forum.themes}
+                id_creator={forum.id_creator}
+                nbrReponse={forum.nbrReponse}
+                nomCreator={forum.nomCreator}
+                prenomCreator={forum.prenomCreator}
+                avatarCreator={forum.avatarCreator}
+              />
+            ))}
       </div>
       <div className="px-6 mt-5">
         <Button

@@ -1,5 +1,4 @@
-import { Input, Button, Typography, Spin, Form, Card } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Input, Spin, Form } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -7,113 +6,96 @@ import "react-toastify/dist/ReactToastify.css";
 import { socket } from "../../Utils/socketConfig.js/socket";
 import ScrollableChat from "../../components/scrollableChat/ScrollableChat";
 import { useAuth } from "../../context/auth/authProvider";
-import { ForumPage } from "./ForumPage";
+import { useSelector } from "react-redux";
 
 const Forms = () => {
-  //loggedIn === userID
   const { loggedIn } = useAuth();
-
-  const selectedForum = { _id: "660b1aaf7bd065d25751c958" };
+  const forumState = useSelector((state) => state.ForumState);
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-
   const [socketConnected, setSocketConnected] = useState(false);
 
   useEffect(() => {
-    socket.emit("setup", selectedForum._id);
+    if (!forumState || !forumState._id) return;
 
-    socket.on("connected", () => setSocketConnected(true));
+    const handleSetup = () => {
+      console.log("User connected");
+      socket.emit("join forum", forumState._id);
+    };
+
+    socket.emit("setup", forumState._id);
+    socket.on("connected", handleSetup);
 
     return () => {
-      socket.disconnect();
+      socket.off("connected", handleSetup);
     };
-  }, [loggedIn]);
+  }, [loggedIn, forumState._id]);
 
   useEffect(() => {
+    if (!forumState || !forumState._id) return;
+
     fetchMessages();
-  }, []);
+  }, [forumState]);
+
+  useEffect(() => {
+    const handleNewMessage = (newMessageReceived) => {
+      console.log({ newMessageReceived });
+      if (forumState && forumState._id === newMessageReceived.id_forum) {
+        setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
+      }
+    };
+
+    socket.on("message received", handleNewMessage);
+
+    return () => {
+      socket.off("message received", handleNewMessage);
+    };
+  }, [forumState]);
 
   const fetchMessages = async () => {
-    if (!selectedForum) return;
+    if (!forumState) return;
 
     try {
       setLoading(true);
-
       const { data } = await axios.get(
         "http://localhost:3001/api/forums/fetchMessages/",
-        { params: { id_forum: selectedForum._id } }
+        { params: { id_forum: forumState._id } }
       );
-      // console.log(data.data.forumReponses);
       setMessages(data.data.forumReponses);
       setLoading(false);
-
-      socket.emit("join forum", selectedForum._id);
     } catch (error) {
-      toast.error("Failed to Load the Messages", {
-        position: "bottom",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.error("Failed to Load the Messages");
+      setLoading(false);
     }
   };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    if (event.key === "Enter" && newMessage && forumState && forumState._id) {
       try {
         setNewMessage("");
         const { data } = await axios.post(
           "http://localhost:3001/api/reponses/",
           {
             contenu_reponse: newMessage,
-            id_forum: selectedForum._id,
+            id_forum: forumState._id,
             id_writer: loggedIn,
           }
         );
-
         socket.emit("new message", data.data.newReponse);
         setMessages([...messages, data.data.newReponse]);
       } catch (error) {
-        toast.error("Failed to send the Message", {
-          position: "bottom",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } finally {
-        setNewMessage(""); // This will clear the input after sending the message
+        toast.error("Failed to send the Message");
       }
     }
   };
-
-  useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
-      if (!selectedForum || selectedForum._id !== newMessageReceived.id_forum) {
-        // Handle notifications
-      } else {
-        // console.log(newMessageReceived);
-        setMessages([...messages, newMessageReceived]);
-      }
-    });
-
-    return () => {
-      socket.off("message received");
-    };
-  });
 
   return (
     <div className="h-full px-8 pt-8">
       <h2 className="text-[#303972] font-bold text-lg">Réponses :</h2>
 
-      {selectedForum && (
+      {forumState._id && (
         <>
           <div style={{ width: "100%", height: "100%", overflowY: "hidden" }}>
             {loading ? (
