@@ -1,9 +1,10 @@
 import ScrollableFeed from "react-scrollable-feed";
 import { Avatar } from "antd";
 import { LikeOutlined, DislikeOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 const ScrollableChat = ({ messages }) => {
   return (
-    <div className="h-[500px] overflow-auto mt-2 ">
+    <div className="h-[500px] overflow-auto ">
       {messages &&
         messages.map((message) => (
           <div
@@ -13,12 +14,16 @@ const ScrollableChat = ({ messages }) => {
             <span className="text-[#303972] ">{message.contenu_reponse}</span>
             <div className="self-center w-full flex flex-col">
               <div className=" flex items-center justify-center self-center ">
-                <Avatar />
+                <Avatar
+                  src={`http://localhost:3001/uploads/${message.userAvatar}`}
+                />
                 <div className="flex flex-col items-center pl-2">
                   <p className="text-[#303972] text-xs font-bold ">
-                    folen folen
+                    {message.userNom} {message.userPrenom}
                   </p>
-                  <div className="text-[#A098AE] text-xs">Il y 5 jours</div>
+                  <div className="text-[#A098AE] text-xs">
+                    {dayjs(message.createdAt).format("YYYY-MM-DD")}
+                  </div>
                 </div>
               </div>
               <div className="flex gap-2 items-center justify-center self-end">

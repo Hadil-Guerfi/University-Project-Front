@@ -3,7 +3,7 @@ import { TitleForum } from "./TitleForum";
 
 const ForumContentSide = () => {
   return (
-    <div className="bg-white relative w-[70%] h-fit">
+    <div className="bg-white relative w-[70%] h-fit rounded-md">
       <TitleForum />
       <Forms/>
     </div>

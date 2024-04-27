@@ -93,7 +93,7 @@ const Forms = () => {
 
   return (
     <div className="h-full px-8 pt-8">
-      <h2 className="text-[#303972] font-bold text-lg">Réponses :</h2>
+      <h2 className="text-[#303972] font-bold text-lg mb-2 ">Réponses :</h2>
 
       {forumState._id && (
         <>
