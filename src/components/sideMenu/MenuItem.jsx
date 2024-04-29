@@ -2,6 +2,8 @@ import {
   AppstoreOutlined,
   MailOutlined,
   SettingOutlined,
+  MessageOutlined,
+  CalendarOutlined,
 } from "@ant-design/icons";
 
 const getItem = (label, key, icon) => {
@@ -16,7 +18,7 @@ const getItem = (label, key, icon) => {
 
 export const items = [
   getItem("Actualité", "/", <MailOutlined className="ml-6" />),
-  getItem("Emploi de temps", "/emploi", <AppstoreOutlined className="ml-6" />),
+  getItem("Emploi de temps", "/emploi", <CalendarOutlined className="ml-6" />),
   getItem("Evenments", "/evenments", <SettingOutlined className="ml-6" />),
   getItem(
     "Liste de votre groupe",
@@ -30,5 +32,5 @@ export const items = [
     <SettingOutlined className="ml-6" />
   ),
   getItem("Forms", "/forms", <SettingOutlined className="ml-6" />),
-  getItem("Envoyer votre avis ", "/avis", <SettingOutlined className="ml-6" />),
+  getItem("Envoyer votre avis ", "/avis", <MessageOutlined className="ml-6" />),
 ];
