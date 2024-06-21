@@ -25,6 +25,7 @@ const UserAvatar = () => {
   return (
     <div className="relative">
       <Avatar
+        src="https://api.dicebear.com/8.x/micah/svg?seed=Mimi" 
         size={isSmallScreen ? 35 : 45}
         className="bg-[rgb(193,187,235)]"
         onClick={(event) => {

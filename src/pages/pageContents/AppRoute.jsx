@@ -9,12 +9,16 @@ import Forms from "../forms/Forms";
 import Note from "../note/Note";
 import ListeGroup from "../listeGroup/ListeGroup";
 import PrivateRoutes from "../../components/privateRoutes/PrivateRoutes";
+import ActualiteDetails from "../actualite/ActualiteDetails";
 
 const AppRoute = () => {
   return (
     <Routes>
       <Route element={<PrivateRoutes />}>
-        <Route path="/" element={<Actualite />}></Route>
+        <Route path="/" element={<Actualite />}>
+        </Route>
+        <Route path="/actualite/:id" element={<ActualiteDetails />}></Route>
+        
         <Route path="/emploi" element={<Emploi />}></Route>
         <Route path="/evenments" element={<Evenement />}></Route>
         <Route path="/groupe" element={<ListeGroup />}></Route>

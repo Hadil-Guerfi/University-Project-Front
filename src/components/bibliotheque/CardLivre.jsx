@@ -17,8 +17,8 @@ const CardLivre = ({item, setVisibility, setItemDetails}) => {
 
   const content = (
     <div>
-      <p>Do you want to rent this book?</p>
-      <Button type="primary" onClick={handleRentBook} className=' border-main_color rounded-xl text-main_color hover:bg-main_color hover:text-white mt-2'>Rent</Button>
+      <p>Voulez-vous emprunter ce livre ?</p>
+      <Button type="primary" onClick={handleRentBook} className=' border-main_color rounded-xl text-main_color hover:bg-main_color hover:text-white mt-2'>Empruntez</Button>
     </div>
   );
   return(

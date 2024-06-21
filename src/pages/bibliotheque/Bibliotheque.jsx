@@ -143,17 +143,16 @@ const Bibliotheque = () => {
 
  //this array is a result of a request we send to the backend specifing the theme(by default "tous"), the sizeOfThePage(by default 9) and the NumberPage(by default 1) 
   const themesData = data?.data.data.ouvrages;
-
+ console.log(data)
   return(
   <div className="">  
      {categories}
      <div className="flex flex-col sm:flex-row  sm:items-start justify-between items-center "> 
        <ListLivres themes={themesData} pageNumber={pageNumber} total={data?.data.data.total} onChangePage={onChangePage} setItemDetails={setItemDetails} className="w-full" setVisibility={setVisibility}/>
       <div className="sm:w-[27vw] w-full rounded-xl ml-2 ">
-        <h3 className="text-main_color font-bold text-center text-basic sm:text-xl m-5 ">Les Livres les plus empruntés</h3>  
+        <h3 className="text-main_color font-bold text-center text-basic sm:text-xl m-5 ">Les Livres les plus empruntés en {themeFilter}</h3>  
         <div className="bg-white rounded-xl max-h-[60vh] overflow-hidden w-full">
-         <OuvragesLesPlusEmprunte  />
-
+         <OuvragesLesPlusEmprunte topOuvrages={data?.data?.data?.topOuvrages} />
         </div>
        </div>
      </div>
