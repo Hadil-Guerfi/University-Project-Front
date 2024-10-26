@@ -30,7 +30,7 @@ function ListMatiere() {
         gap="middle"
         className={`${
           viewMore ? "overflow-y-scroll pr-1.5" : "overflow-y-hidden "
-        } h-[82%] scrollbarListMatiere   w-full`}>
+        } h-[84%] scrollbarListMatiere   w-full`}>
         {/*-------------------------------------- MATIERES --------------------------------------*/}
 
         {supportCoursState.status === "succeeded" &&

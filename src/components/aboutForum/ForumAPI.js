@@ -65,3 +65,18 @@ export const UseGetAllForums = (data, onSuccess, onError) => {
     refetchOnWindowFocus: false,
   });
 };
+
+
+//-------------------------------------------------------------------------------
+
+const sendMessage = (data) => {
+  return axios.post("http://localhost:3001/api/reponses", data);
+};
+
+export const UseSendMessage = (onSuccessResponse, onErrorResponse) => {
+  return useMutation(sendMessage, {
+    onSuccess: onSuccessResponse,
+    onError: onErrorResponse,
+    refetchOnWindowFocus: false,
+  });
+};

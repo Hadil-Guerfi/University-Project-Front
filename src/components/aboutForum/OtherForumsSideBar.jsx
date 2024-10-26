@@ -39,7 +39,7 @@ const OtherForumsSideBar = ({ themes }) => {
             setParams({ themes: ["bitcon", "hacking"] });
             refetch();
           }}>
-          Vos recents forums
+          Autres forums
         </h2>
         <ConfigProvider
           theme={{

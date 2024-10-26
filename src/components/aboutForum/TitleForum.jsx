@@ -6,8 +6,6 @@ export const TitleForum = () => {
 
   const forumState = useSelector((state) => state.ForumState);
 
-  console.log(forumState)
-
   return (
     <Flex
       vertical={false}
@@ -33,7 +31,7 @@ export const TitleForum = () => {
                   key={index}
                   className="bg-[#C1BBEB] text-xs py-[6px] px-3 rounded-2xl text-[#303972] font-medium">
                   {theme}
-                </div> // Added key prop to each child element in the map function
+                </div> 
               ))}
             </div>
             <Flex vertical={true} align="start" className=" w-[100%]">

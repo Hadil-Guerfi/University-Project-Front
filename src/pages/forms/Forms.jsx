@@ -7,6 +7,7 @@ import { socket } from "../../Utils/socketConfig.js/socket";
 import ScrollableChat from "../../components/scrollableChat/ScrollableChat";
 import { useAuth } from "../../context/auth/authProvider";
 import { useSelector } from "react-redux";
+import { UseSendMessage } from "../../components/aboutForum/ForumAPI";
 
 const Forms = () => {
   const { loggedIn } = useAuth();
@@ -16,6 +17,7 @@ const Forms = () => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (!forumState || !forumState._id) return;
@@ -41,7 +43,6 @@ const Forms = () => {
 
   useEffect(() => {
     const handleNewMessage = (newMessageReceived) => {
-      console.log({ newMessageReceived });
       if (forumState && forumState._id === newMessageReceived.id_forum) {
         setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
       }
@@ -71,25 +72,43 @@ const Forms = () => {
     }
   };
 
+
+  const onSuccessResponse=(data)=>{
+
+    console.log(data)
+    socket.emit("new message", data.data.data.newReponse);
+    setMessages([...messages, data.data.data.newReponse]);
+    setNewMessage("");
+    form.resetFields();
+
+  }
+
+  const onErrorResponse = () => {
+    toast.error("Failed to send the Message");
+  };
+
+
+  const { mutate: sendMsg } = UseSendMessage(
+    onSuccessResponse,
+    onErrorResponse
+  );
+
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage && forumState && forumState._id) {
-      try {
-        setNewMessage("");
-        const { data } = await axios.post(
-          "http://localhost:3001/api/reponses/",
-          {
-            contenu_reponse: newMessage,
-            id_forum: forumState._id,
-            id_writer: loggedIn,
-          }
-        );
-        socket.emit("new message", data.data.newReponse);
-        setMessages([...messages, data.data.newReponse]);
-      } catch (error) {
-        toast.error("Failed to send the Message");
-      }
+
+
+      sendMsg({
+        contenu_reponse: newMessage,
+        id_forum: forumState._id,
+        id_writer: loggedIn,
+        //ADD AVATAR ET NOM ET PRENOM
+      });
+
     }
   };
+
+
+  
 
   return (
     <div className="h-full px-8 pt-8">
@@ -105,11 +124,11 @@ const Forms = () => {
                 {messages.length > 0 ? (
                   <ScrollableChat messages={messages} />
                 ) : (
-                  <p>No messages available</p>
+                  <p>Pas de messages en encore</p>
                 )}
               </div>
             )}
-            <Form className="relative top-4">
+            <Form className="relative top-4" form={form}>
               <Form.Item
                 name="message"
                 rules={[

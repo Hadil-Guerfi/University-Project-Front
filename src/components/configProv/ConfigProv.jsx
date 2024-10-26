@@ -15,7 +15,10 @@ function ConfigProv() {
 
   return loggedIn ? (
     <ConfigProvider theme={themeObj}>
-      <Layout hasSider style={{ height: "100vh" }} className="bg-transparent">
+      <Layout
+        hasSider
+        style={{ minHeight: "100vh", height: "fit-content" }}
+        className="bg-transparent">
         <ToggleSideMenuProvider>
           <SideMenuToggleButton />
           <SideMenu />

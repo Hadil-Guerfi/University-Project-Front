@@ -13,11 +13,10 @@ function UneMatiere({ nomMatire, types, nomModule, theme }) {
     dispatch(setSelectedMatiere({ nomMatiere: nomMatire }));
   };
 
-  console.log(`bg-[${theme}]`);
 
   return (
     <div
-      className=" w-full h-[120px] bg-white rounded-xl relative flex cursor-pointer"
+      className=" w-full h-[250px] bg-white rounded-xl relative flex cursor-pointer"
       onClick={() => {
         handleSelection();
       }}>
@@ -25,7 +24,7 @@ function UneMatiere({ nomMatire, types, nomModule, theme }) {
         style={{ backgroundColor: theme }}
         className={` h-full rounded-tl-xl rounded-bl-xl  w-5`}></div>
 
-      <div className="not-colored py-1.5 px-3 grow">
+      <div className="not-colored py-3 px-4 grow">
         <div className="mb-3">
           <Title
             level={4}
@@ -39,7 +38,7 @@ function UneMatiere({ nomMatire, types, nomModule, theme }) {
           <Flex vertical={true}>
             <Flex align="center" gap={15} className="pb-1">
               <CalendarOutlined style={{ color: "#FB7D5B" }} />
-              <Text className="text-gray_support_cours text-sm">{types}</Text>
+              <Text className="text-gray_support_cours text-sm">{types?types:"cours-td-tp"}</Text>
             </Flex>
 
             <Flex align="center" gap={15}>
@@ -50,7 +49,6 @@ function UneMatiere({ nomMatire, types, nomModule, theme }) {
             </Flex>
           </Flex>
 
-          <Avatar size={40} className="bg-[rgb(193,187,235)]" />
         </Flex>
       </div>
     </div>
