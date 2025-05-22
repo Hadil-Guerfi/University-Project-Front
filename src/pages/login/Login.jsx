@@ -7,7 +7,6 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
   const { loggedIn, setLoggedIn } = useAuth();
-
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [user, setUser] = useState({

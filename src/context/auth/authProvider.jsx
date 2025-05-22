@@ -7,7 +7,7 @@ const AuthContext = createContext();
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(undefined);
   const [loading, setLoading] = useState(true);
-
+  
   async function getLoggedIn() {
     try {
       const loggedInRes = await instance.get("/users/verifyLogIn", {
